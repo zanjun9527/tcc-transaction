@@ -60,7 +60,7 @@ public class ResourceCoordinatorInterceptor {
         String cancelMethodName = compensable.cancelMethod();
 
         Transaction transaction = transactionManager.getCurrentTransaction();
-        TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());
+        TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());//只是为了拿到全局id，还费劲clone干嘛。
 
         if (FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs()) == null) {
             FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().set(new TransactionContext(xid, TransactionStatus.TRYING.getId()), pjp.getTarget(), ((MethodSignature) pjp.getSignature()).getMethod(), pjp.getArgs());
@@ -68,6 +68,8 @@ public class ResourceCoordinatorInterceptor {
 
         Class targetClass = ReflectionUtils.getDeclaringType(pjp.getTarget().getClass(), method.getName(), method.getParameterTypes());
 
+
+        //组装一次方法调用的全部信息
         InvocationContext confirmInvocation = new InvocationContext(targetClass,
                 confirmMethodName,
                 method.getParameterTypes(), pjp.getArgs());

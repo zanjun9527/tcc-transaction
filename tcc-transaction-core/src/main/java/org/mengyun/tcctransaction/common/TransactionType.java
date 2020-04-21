@@ -4,6 +4,8 @@ package org.mengyun.tcctransaction.common;
 
 /**
  * Created by changmingxie on 11/15/15.
+ *
+ * 事务类型，主事务，分支事务
  */
 public enum TransactionType {
 

@@ -16,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by changmingxie on 10/26/15.
+ *
+ * 封装的事务操作dto，在最终的SpringJdbcTransactionRepository，最为入参dto，进行tcc表的操作。
  */
 public class Transaction implements Serializable {
 

@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 /**
  * Created by changmingxie on 11/9/15.
+ *
+ * 一次方法调用的全信息
+ *
  */
 public class InvocationContext implements Serializable {
 

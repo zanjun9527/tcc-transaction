@@ -6,16 +6,22 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
+
+    <!--上下文和简单的bean功能-->
     <bean id="springBeanFactory" class="org.mengyun.tcctransaction.spring.support.SpringBeanFactory"/>
 
 
+    <!--初始化 事务操作类，恢复策略和事务管理器-->
     <bean id="transactionConfigurator" class="org.mengyun.tcctransaction.spring.support.SpringTransactionConfigurator"
           init-method="init"/>
 
+
+    <!--实际就是一个@Compensable的拦截器，处理拦截逻辑，判断事务的状态和类型-->
     <bean id="compensableTransactionAspect" class="org.mengyun.tcctransaction.spring.ConfigurableTransactionAspect"
           init-method="init">
         <property name="transactionConfigurator" ref="transactionConfigurator"/>
     </bean>
+
 
     <bean id="resourceCoordinatorAspect" class="org.mengyun.tcctransaction.spring.ConfigurableCoordinatorAspect"
           init-method="init">

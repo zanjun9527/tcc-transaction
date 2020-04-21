@@ -52,8 +52,13 @@ public class CompensableMethodContext {
         return method;
     }
 
+
+    /**
+     * 获取方法的参数中@UniqueIdentity标注的参数值
+     * @return
+     */
     public Object getUniqueIdentity() {
-        Annotation[][] annotations = this.getMethod().getParameterAnnotations();
+        Annotation[][] annotations = this.getMethod().getParameterAnnotations();//一个参数可能同时有多个注解
 
         for (int i = 0; i < annotations.length; i++) {
             for (Annotation annotation : annotations[i]) {

@@ -149,11 +149,17 @@ public class TransactionManager {
 
     public Transaction getCurrentTransaction() {
         if (isTransactionActive()) {
-            return CURRENT.get().peek();
+            return CURRENT.get().peek();//返回队列的头元素
         }
         return null;
     }
 
+
+    /**
+     * 表示事务可用
+     * 当前线程中是否存在不为空的Deque<Transaction>。
+     * @return
+     */
     public boolean isTransactionActive() {
         Deque<Transaction> transactions = CURRENT.get();
         return transactions != null && !transactions.isEmpty();

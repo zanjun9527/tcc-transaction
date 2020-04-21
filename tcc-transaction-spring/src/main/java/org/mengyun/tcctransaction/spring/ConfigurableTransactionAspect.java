@@ -15,6 +15,10 @@ public class ConfigurableTransactionAspect extends CompensableTransactionAspect 
 
     private TransactionConfigurator transactionConfigurator;
 
+
+    /**
+     * 初始化一个操作类CompensableTransactionInterceptor，处理@Compensable拦截到的方法
+     */
     public void init() {
 
         TransactionManager transactionManager = transactionConfigurator.getTransactionManager();

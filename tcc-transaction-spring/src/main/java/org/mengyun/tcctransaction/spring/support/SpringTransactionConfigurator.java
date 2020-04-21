@@ -13,19 +13,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by changmingxie on 11/11/15.
+ *
+ * 初始化1事务操作类，2.恢复策略  3.事务管理器（有一个线程池属性）
+ *
  */
 public class SpringTransactionConfigurator implements TransactionConfigurator {
 
     private static volatile ExecutorService executorService = null;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;//数据库的操作类(SpringJdbcTransactionRepository)，操作的是tcc_transaction_*的事务表
 
     @Autowired(required = false)
-    private RecoverConfig recoverConfig = DefaultRecoverConfig.INSTANCE;
+    private RecoverConfig recoverConfig = DefaultRecoverConfig.INSTANCE;//恢复策略？，暂时不用
 
 
-    private TransactionManager transactionManager;
+    private TransactionManager transactionManager;//这里是自定义的事务事务管理器，封装自定义transaction的操作
 
     public void init() {
         transactionManager = new TransactionManager();

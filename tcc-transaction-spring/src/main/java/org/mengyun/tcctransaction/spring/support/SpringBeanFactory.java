@@ -21,12 +21,17 @@ public class SpringBeanFactory implements BeanFactory, ApplicationContextAware {
         FactoryBuilder.registerBeanFactory(this);
     }
 
+
+    /**
+     * 容器中存在clazz的bean 。
+     */
     @Override
     public boolean isFactoryOf(Class clazz) {
         Map map = this.applicationContext.getBeansOfType(clazz);
         return map.size() > 0;
     }
 
+    //应该是要求唯一
     @Override
     public <T> T getBean(Class<T> var1) {
         return this.applicationContext.getBean(var1);

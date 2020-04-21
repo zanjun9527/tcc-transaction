@@ -9,16 +9,18 @@ import java.util.UUID;
 
 /**
  * Created by changmingxie on 10/26/15.
+ *
+ * 事务标识符类，全局和分支
  */
 public class TransactionXid implements Xid, Serializable {
 
     private static final long serialVersionUID = -6817267250789142043L;
 
-    private int formatId = 1;
+    private int formatId = 1;               //获取XID的格式标识符部分
 
-    private byte[] globalTransactionId;
+    private byte[] globalTransactionId;  //获取XID的全局事务标识符部分作为字节数组。
 
-    private byte[] branchQualifier;
+    private byte[] branchQualifier;     //获取XID的事务分支标识符部分作为字节数组。
 
     private static byte[] CUSTOMIZED_TRANSACTION_ID = "UniqueIdentity".getBytes();
 
@@ -39,7 +41,7 @@ public class TransactionXid implements Xid, Serializable {
 
         if (uniqueIdentity == null) {
 
-            globalTransactionId = uuidToByteArray(UUID.randomUUID());
+            globalTransactionId = uuidToByteArray(UUID.randomUUID());//全局事务id
             branchQualifier = uuidToByteArray(UUID.randomUUID());
 
         } else {

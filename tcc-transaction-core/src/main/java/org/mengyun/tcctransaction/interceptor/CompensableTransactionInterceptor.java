@@ -76,7 +76,7 @@ public class CompensableTransactionInterceptor {
             transaction = transactionManager.begin(compensableMethodContext.getUniqueIdentity());
 
             try {
-                returnValue = compensableMethodContext.proceed();
+                returnValue = compensableMethodContext.proceed();//放行
             } catch (Throwable tryingException) {
 
                 if (!isDelayCancelException(tryingException, allDelayCancelExceptions)) {

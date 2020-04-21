@@ -40,7 +40,12 @@ public @interface Compensable {
         }
     }
 
+
+    /**
+     * 操作参数中的TransactionContext  相关
+     */
     class DefaultTransactionContextEditor implements TransactionContextEditor {
+
 
         @Override
         public TransactionContext get(Object target, Method method, Object[] args) {

@@ -47,6 +47,8 @@ public class Participant implements Serializable {
         Terminator.invoke(new TransactionContext(xid, TransactionStatus.CANCELLING.getId()), cancelInvocationContext, transactionContextEditorClass);
     }
 
+
+    //就是调用confirmInvocationContext封装的confirm方法
     public void commit() {
         Terminator.invoke(new TransactionContext(xid, TransactionStatus.CONFIRMING.getId()), confirmInvocationContext, transactionContextEditorClass);
     }
