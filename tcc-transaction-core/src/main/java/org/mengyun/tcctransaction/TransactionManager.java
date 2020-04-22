@@ -36,10 +36,15 @@ public class TransactionManager {
 
     }
 
+    /**
+     * 创建根事务，并写进数据库。datasource的connection默认是自动提交事务
+     * @param uniqueIdentify
+     * @return
+     */
     public Transaction begin(Object uniqueIdentify) {
         Transaction transaction = new Transaction(uniqueIdentify,TransactionType.ROOT);
-        transactionRepository.create(transaction);
-        registerTransaction(transaction);
+        transactionRepository.create(transaction);//对数据中的tcc事务表进库，根据项目的表前后缀进库
+        registerTransaction(transaction);//将当前事务放进线程变量中的事务队列中
         return transaction;
     }
 

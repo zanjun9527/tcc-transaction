@@ -27,11 +27,13 @@ public class CompensableMethodContext {
 
     TransactionContext transactionContext = null;
 
+    //大概就是将连接点的信息放到这个操作注解的上下文中
     public CompensableMethodContext(ProceedingJoinPoint pjp) {
         this.pjp = pjp;
         this.method = getCompensableMethod();
         this.compensable = method.getAnnotation(Compensable.class);
         this.propagation = compensable.propagation();
+        //创建一个DefaultTransactionContextEditor 的单例工厂然后实例化，然后获取入参中的transactionContext上下文
         this.transactionContext = FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs());
 
     }
@@ -89,6 +91,12 @@ public class CompensableMethodContext {
         return method;
     }
 
+    /**
+     * 根据参数中的transactionContext和当前线程变量中是否有事务
+     * 判断事务发起的级别，然后创建相应的级别事务
+     *
+     *
+     */
     public MethodRole getMethodRole(boolean isTransactionActive) {
         if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && transactionContext == null) ||
                 propagation.equals(Propagation.REQUIRES_NEW)) {

@@ -8,6 +8,10 @@ import org.mengyun.tcctransaction.utils.StringUtils;
 import java.lang.reflect.Method;
 
 /**
+ *
+ *
+ *
+ * 这是一个执行器，用来执行封装好的反射操作（confirm 和cancel等）
  * Created by changmingxie on 10/30/15.
  */
 public final class Terminator {

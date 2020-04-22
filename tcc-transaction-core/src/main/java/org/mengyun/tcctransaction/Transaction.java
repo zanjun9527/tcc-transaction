@@ -57,6 +57,9 @@ public class Transaction implements Serializable {
         this.transactionType = transactionType;
     }
 
+    /**
+     * uniqueIdentity 如果为空，就创建一个全局事务id  和一个分支事务id
+     */
     public Transaction(Object uniqueIdentity,TransactionType transactionType) {
 
         this.xid = new TransactionXid(uniqueIdentity);

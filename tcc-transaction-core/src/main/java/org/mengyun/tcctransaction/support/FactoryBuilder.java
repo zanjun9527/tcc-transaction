@@ -16,8 +16,13 @@ public final class FactoryBuilder {
 
     private static List<BeanFactory> beanFactories = new ArrayList<BeanFactory>();
 
+    /**
+     * 绑定class 和对应的单例工厂
+     */
     private static ConcurrentHashMap<Class, SingeltonFactory> classFactoryMap = new ConcurrentHashMap<Class, SingeltonFactory>();
 
+
+    //绑定class对应的单例工程
     public static <T> SingeltonFactory<T> factoryOf(Class<T> clazz) {
 
         if (!classFactoryMap.containsKey(clazz)) {
@@ -37,9 +42,12 @@ public final class FactoryBuilder {
     }
 
     public static void registerBeanFactory(BeanFactory beanFactory) {
-        beanFactories.add(beanFactory);
+        beanFactories.add(beanFactory);//启动注册了整个环境的context
     }
 
+    /**
+     * 功能就是使用创建一个clazz  的单例  实例
+     */
     public static class SingeltonFactory<T> {
 
         private volatile T instance = null;
@@ -55,6 +63,8 @@ public final class FactoryBuilder {
             this.className = clazz.getName();
         }
 
+
+        //双重检查，使用volatile取消指令重排序
         public T getInstance() {
 
             if (instance == null) {
@@ -76,6 +86,11 @@ public final class FactoryBuilder {
             return instance;
         }
 
+        /**
+         * 初看是判断两个类是否是同一个类的实例
+         * @param other
+         * @return
+         */
         @Override
         public boolean equals(Object other) {
             if (this == other) return true;

@@ -38,7 +38,7 @@ public class CompensableTransactionInterceptor {
 
     public Object interceptCompensableMethod(ProceedingJoinPoint pjp) throws Throwable {
 
-        CompensableMethodContext compensableMethodContext = new CompensableMethodContext(pjp);
+        CompensableMethodContext compensableMethodContext = new CompensableMethodContext(pjp);//根据连接点的信息，创建一个 Compensable注解的上下文
 
         boolean isTransactionActive = transactionManager.isTransactionActive();
 
@@ -48,11 +48,11 @@ public class CompensableTransactionInterceptor {
 
         switch (compensableMethodContext.getMethodRole(isTransactionActive)) {
             case ROOT:
-                return rootMethodProceed(compensableMethodContext);
+                return rootMethodProceed(compensableMethodContext);//发起root事务，try阶段
             case PROVIDER:
                 return providerMethodProceed(compensableMethodContext);
             default:
-                return pjp.proceed();
+                return pjp.proceed();//没有事务操作，直接放行
         }
     }
 
@@ -63,9 +63,9 @@ public class CompensableTransactionInterceptor {
 
         Transaction transaction = null;
 
-        boolean asyncConfirm = compensableMethodContext.getAnnotation().asyncConfirm();
+        boolean asyncConfirm = compensableMethodContext.getAnnotation().asyncConfirm();//异步confirm标记
 
-        boolean asyncCancel = compensableMethodContext.getAnnotation().asyncCancel();
+        boolean asyncCancel = compensableMethodContext.getAnnotation().asyncCancel();//异步cancel标记
 
         Set<Class<? extends Exception>> allDelayCancelExceptions = new HashSet<Class<? extends Exception>>();
         allDelayCancelExceptions.addAll(this.delayCancelExceptions);
@@ -73,10 +73,11 @@ public class CompensableTransactionInterceptor {
 
         try {
 
-            transaction = transactionManager.begin(compensableMethodContext.getUniqueIdentity());
+
+            transaction = transactionManager.begin(compensableMethodContext.getUniqueIdentity());//创建root事务并写进数据库中的tcc表
 
             try {
-                returnValue = compensableMethodContext.proceed();//放行
+                returnValue = compensableMethodContext.proceed();//放行，放行之后会被下一个拦截器拦截
             } catch (Throwable tryingException) {
 
                 if (!isDelayCancelException(tryingException, allDelayCancelExceptions)) {
@@ -89,7 +90,10 @@ public class CompensableTransactionInterceptor {
                 throw tryingException;
             }
 
-            transactionManager.commit(asyncConfirm);
+            /**
+             * 这里是自己完成就进入还是等其他的try都完成才进入confirm?
+             */
+            transactionManager.commit(asyncConfirm);//这不confirm暂时不会执行，等上面的拦截结束了才会执行。
 
         } finally {
             transactionManager.cleanAfterCompletion(transaction);

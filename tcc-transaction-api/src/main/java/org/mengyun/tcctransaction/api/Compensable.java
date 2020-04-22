@@ -42,7 +42,7 @@ public @interface Compensable {
 
 
     /**
-     * 操作参数中的TransactionContext  相关
+     * 操作入参中的TransactionContext 相关
      */
     class DefaultTransactionContextEditor implements TransactionContextEditor {
 
@@ -67,6 +67,10 @@ public @interface Compensable {
             }
         }
 
+
+        /**
+         * 找到TransactionContext 在参数中下标
+         */
         public static int getTransactionContextParamPosition(Class<?>[] parameterTypes) {
 
             int position = -1;
@@ -80,6 +84,10 @@ public @interface Compensable {
             return position;
         }
 
+
+        /**
+         * 获取入参中的TransactionContext
+         */
         public static TransactionContext getTransactionContextFromArgs(Object[] args) {
 
             TransactionContext transactionContext = null;

@@ -21,6 +21,9 @@ public abstract class CachableTransactionRepository implements TransactionReposi
 
     private int expireDuration = 120;
 
+    /**
+     * 用来缓存对应的事务，目前没看到啥用
+     */
     private Cache<Xid, Transaction> transactionXidCompensableTransactionCache;
 
     @Override

@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by changmingxie on 11/12/15.
+ * 自定义的事务操作接口，常规的事务操作
  */
 public interface TransactionRepository {
 

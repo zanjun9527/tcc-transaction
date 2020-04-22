@@ -18,7 +18,7 @@ public class SpringBeanFactory implements BeanFactory, ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        FactoryBuilder.registerBeanFactory(this);
+        FactoryBuilder.registerBeanFactory(this);//将springbean的工程(主要就是包含一个上下文的context)，注册到自动以的工厂类中
     }
 
 
