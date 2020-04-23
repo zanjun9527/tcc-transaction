@@ -32,6 +32,12 @@ public class PaymentServiceImpl {
     @Autowired
     OrderRepository orderRepository;
 
+    /**
+     * 这里的异步只是：开启线程，confirm
+     * @param orderNo
+     * @param redPacketPayAmount
+     * @param capitalPayAmount
+     */
     @Compensable(confirmMethod = "confirmMakePayment", cancelMethod = "cancelMakePayment", asyncConfirm = false, delayCancelExceptions = {SocketTimeoutException.class, org.apache.dubbo.remoting.TimeoutException.class})
     public void makePayment(@UniqueIdentity String orderNo, BigDecimal redPacketPayAmount, BigDecimal capitalPayAmount) {
         System.out.println("order try make payment called.time seq:" + DateFormatUtils.format(Calendar.getInstance(), "yyyy-MM-dd HH:mm:ss"));

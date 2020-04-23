@@ -38,6 +38,8 @@ public class TransactionManager {
 
     /**
      * 创建根事务，并写进数据库。datasource的connection默认是自动提交事务
+     * UniqueIdentit为空就默认创建，不为空就根据UniqueIdentity创建全局和分支事务id
+     *
      * @param uniqueIdentify
      * @return
      */
@@ -48,6 +50,10 @@ public class TransactionManager {
         return transaction;
     }
 
+
+    /**
+     * begin 只开启根事务
+     */
     public Transaction begin() {
         Transaction transaction = new Transaction(TransactionType.ROOT);
         transactionRepository.create(transaction);
@@ -194,6 +200,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * 这里主要的更新：
+     * 1.向当前事务中添加参与者信息
+     * @param participant
+     */
     public void enlistParticipant(Participant participant) {
         Transaction transaction = this.getCurrentTransaction();
         transaction.enlistParticipant(participant);

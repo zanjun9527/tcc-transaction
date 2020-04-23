@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Pointcut;
 
 /**
  * Created by changmingxie on 11/8/15.
+ * 添加参与者(封装了confirm 和cancel方法，绑定事务id，绑定单当前的事务中)
  */
 @Aspect
 public abstract class ResourceCoordinatorAspect {

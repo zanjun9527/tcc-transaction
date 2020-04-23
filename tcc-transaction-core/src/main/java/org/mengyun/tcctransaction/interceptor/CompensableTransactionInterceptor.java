@@ -77,7 +77,9 @@ public class CompensableTransactionInterceptor {
             transaction = transactionManager.begin(compensableMethodContext.getUniqueIdentity());//创建root事务并写进数据库中的tcc表
 
             try {
-                returnValue = compensableMethodContext.proceed();//放行，放行之后会被下一个拦截器拦截
+                //放行，下个资源拦截器，更新添加参与者相关信息
+                //主try中带有两个dubbo的try执行
+                returnValue = compensableMethodContext.proceed();
             } catch (Throwable tryingException) {
 
                 if (!isDelayCancelException(tryingException, allDelayCancelExceptions)) {
@@ -91,17 +93,25 @@ public class CompensableTransactionInterceptor {
             }
 
             /**
-             * 这里是自己完成就进入还是等其他的try都完成才进入confirm?
+             * 这个要等到root中的try执行完才会执行，其中包括了两个dubbo的try操作
+             * 等其他的try都完成进入confirm阶段
              */
             transactionManager.commit(asyncConfirm);//这不confirm暂时不会执行，等上面的拦截结束了才会执行。
 
         } finally {
+            //处理完成后，需要从线程队列中移除事务，避免线程池影响和内存。threadlocal使用完要移除
             transactionManager.cleanAfterCompletion(transaction);
         }
 
         return returnValue;
     }
 
+    /**
+     * 分支事务被拦截后，开启branch事务，然后放行，第二个拦截器存入参与者相关信息
+     * @param compensableMethodContext
+     * @return
+     * @throws Throwable
+     */
     private Object providerMethodProceed(CompensableMethodContext compensableMethodContext) throws Throwable {
 
         Transaction transaction = null;

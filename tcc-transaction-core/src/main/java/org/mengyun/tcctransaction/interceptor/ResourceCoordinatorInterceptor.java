@@ -28,6 +28,13 @@ public class ResourceCoordinatorInterceptor {
         this.transactionManager = transactionManager;
     }
 
+
+    /**
+     * 没有after操作
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     public Object interceptTransactionContextMethod(ProceedingJoinPoint pjp) throws Throwable {
 
         Transaction transaction = transactionManager.getCurrentTransaction();
@@ -63,9 +70,11 @@ public class ResourceCoordinatorInterceptor {
         TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());//只是为了拿到全局id，还费劲clone干嘛。
 
         if (FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs()) == null) {
+            //如果参数中没有TransactionContext入参的话，这边目前看什么都没设置
             FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().set(new TransactionContext(xid, TransactionStatus.TRYING.getId()), pjp.getTarget(), ((MethodSignature) pjp.getSignature()).getMethod(), pjp.getArgs());
         }
 
+        //返回该类的接口或者本身实现类，这里就先当做是本身的实现类
         Class targetClass = ReflectionUtils.getDeclaringType(pjp.getTarget().getClass(), method.getName(), method.getParameterTypes());
 
 
@@ -78,6 +87,9 @@ public class ResourceCoordinatorInterceptor {
                 cancelMethodName,
                 method.getParameterTypes(), pjp.getArgs());
 
+        /**
+         * 参与者有统一的全局事务id，和自己的分支id
+         */
         Participant participant =
                 new Participant(
                         xid,

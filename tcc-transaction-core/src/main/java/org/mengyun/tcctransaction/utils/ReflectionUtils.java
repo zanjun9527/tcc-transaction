@@ -52,7 +52,7 @@ public class ReflectionUtils {
         Class findClass = aClass;
 
         do {
-            Class[] clazzes = findClass.getInterfaces();
+            Class[] clazzes = findClass.getInterfaces();//查找接口总是否有同样的方法，找打了就返回该接口
 
             for (Class clazz : clazzes) {
 
@@ -70,7 +70,7 @@ public class ReflectionUtils {
             findClass = findClass.getSuperclass();
 
         } while (!findClass.equals(Object.class));
-
+//没有接口或者不是接口的中的实现方法就返回这个实现类
         return aClass;
     }
 
