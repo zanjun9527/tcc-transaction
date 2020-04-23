@@ -23,6 +23,9 @@ public class CompensableMethodContext {
 
     Compensable compensable = null;
 
+    /**
+     * 自定义传播属性
+     */
     Propagation propagation = null;
 
     TransactionContext transactionContext = null;
