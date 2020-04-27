@@ -289,6 +289,7 @@ public class JdbcTransactionRepository extends CachableTransactionRepository {
 
     protected void constructTransactions(ResultSet resultSet, List<Transaction> transactions) throws SQLException {
         while (resultSet.next()) {
+            //第三列取的是content 存放的是transaction内容(封装了事务上下文和调用信息),ResultSet 的getvalue操作
             byte[] transactionBytes = resultSet.getBytes(3);
             Transaction transaction = (Transaction) serializer.deserialize(transactionBytes);
             transaction.changeStatus(TransactionStatus.valueOf(resultSet.getInt(4)));

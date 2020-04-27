@@ -45,7 +45,8 @@ public class Transaction implements Serializable {
 
     }
 
-    public Transaction(TransactionContext transactionContext) {
+    public
+    Transaction(TransactionContext transactionContext) {
         this.xid = transactionContext.getXid();
         this.status = TransactionStatus.TRYING;
         this.transactionType = TransactionType.BRANCH;

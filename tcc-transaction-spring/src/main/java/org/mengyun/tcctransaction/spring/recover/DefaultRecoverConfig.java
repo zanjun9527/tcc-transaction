@@ -38,6 +38,10 @@ public class DefaultRecoverConfig implements RecoverConfig {
         return maxRetryCount;
     }
 
+    /**
+     * 默认120秒
+     * @return
+     */
     @Override
     public int getRecoverDuration() {
         return recoverDuration;

@@ -9,6 +9,10 @@ public interface RecoverConfig {
 
     public int getMaxRetryCount();
 
+    /**
+     * 默认是120秒
+     * @return
+     */
     public int getRecoverDuration();
 
     public String getCronExpression();

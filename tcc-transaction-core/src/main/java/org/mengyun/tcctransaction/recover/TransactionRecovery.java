@@ -25,6 +25,7 @@ public class TransactionRecovery {
 
     public void startRecover() {
 
+        //查询出更新时间在2min之前的所有error事务（正常流程昨晚都会清空，没有清空表示error)
         List<Transaction> transactions = loadErrorTransactions();
 
         recoverErrorTransactions(transactions);
@@ -63,6 +64,7 @@ public class TransactionRecovery {
             try {
                 transaction.addRetriedCount();
 
+                //根据事务状态commit或者cancel事务
                 if (transaction.getStatus().equals(TransactionStatus.CONFIRMING)) {
 
                     transaction.changeStatus(TransactionStatus.CONFIRMING);

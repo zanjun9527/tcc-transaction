@@ -36,7 +36,7 @@ public class CompensableMethodContext {
         this.method = getCompensableMethod();
         this.compensable = method.getAnnotation(Compensable.class);
         this.propagation = compensable.propagation();
-        //创建一个DefaultTransactionContextEditor 的单例工厂然后实例化，然后获取入参中的transactionContext上下文
+        //创建一个事务上下文的单例（可能是default，也可能是dubbo）工厂然后实例化，然后获取入参中的transactionContext上下文
         this.transactionContext = FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs());
 
     }

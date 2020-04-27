@@ -92,6 +92,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
         List<Transaction> transactions = doFindAllUnmodifiedSince(date);
 
         for (Transaction transaction : transactions) {
+            //这里放入缓存的是，可能是重启后需要重数据中加载对应的事务信息放进缓存中
             putToCache(transaction);
         }
 

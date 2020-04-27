@@ -64,7 +64,7 @@ public final class FactoryBuilder {
         }
 
 
-        //双重检查，使用volatile取消指令重排序
+        //双重检查，使用volatile取消指令重排序,new 一个实例
         public T getInstance() {
 
             if (instance == null) {

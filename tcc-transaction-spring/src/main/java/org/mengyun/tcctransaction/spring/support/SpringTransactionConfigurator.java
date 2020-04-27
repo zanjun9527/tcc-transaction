@@ -24,6 +24,9 @@ public class SpringTransactionConfigurator implements TransactionConfigurator {
     @Autowired
     private TransactionRepository transactionRepository;//数据库的操作类(SpringJdbcTransactionRepository)，操作的是tcc_transaction_*的事务表
 
+    /**
+     * 这里实际测试使用的是xml中注册的bean，后面的默认暂时看是无效的
+     */
     @Autowired(required = false)
     private RecoverConfig recoverConfig = DefaultRecoverConfig.INSTANCE;//恢复策略？，暂时不用
 
@@ -33,7 +36,7 @@ public class SpringTransactionConfigurator implements TransactionConfigurator {
     public void init() {
         transactionManager = new TransactionManager();
         transactionManager.setTransactionRepository(transactionRepository);
-
+        /*以下仅仅是添加一个线程池，让transactionManager可以异步commit*/
         if (executorService == null) {
 
 

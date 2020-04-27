@@ -67,7 +67,7 @@ public class ResourceCoordinatorInterceptor {
         String cancelMethodName = compensable.cancelMethod();
 
         Transaction transaction = transactionManager.getCurrentTransaction();
-        TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());//只是为了拿到全局id，还费劲clone干嘛。
+        TransactionXid xid = new TransactionXid(transaction.getXid().getGlobalTransactionId());//只是为了拿到全局id，`。
 
         if (FactoryBuilder.factoryOf(compensable.transactionContextEditor()).getInstance().get(pjp.getTarget(), method, pjp.getArgs()) == null) {
             //如果参数中没有TransactionContext入参的话，这边目前看什么都没设置

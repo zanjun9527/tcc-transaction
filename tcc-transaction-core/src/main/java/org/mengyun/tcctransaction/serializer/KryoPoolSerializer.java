@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Created by changming.xie on 9/18/17.
+ * Kryo Pool  这里只是一个序列化的工具类
  */
 public class KryoPoolSerializer implements ObjectSerializer<Transaction> {
 
